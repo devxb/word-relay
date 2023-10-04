@@ -1,4 +1,4 @@
-package xb.dev.server
+package xb.dev.engine.server
 
 fun interface Dispatchable {
 
