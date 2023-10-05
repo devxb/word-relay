@@ -14,4 +14,9 @@ class User(
 
     @Column(name = "password", nullable = false)
     val password: String
-)
+) {
+
+    internal fun validPassword(password: String) = require(this.password == password) {
+        throw IllegalArgumentException("일치하지 않는 비밀번호 입니다. \"${password}\"")
+    }
+}
