@@ -1,6 +1,6 @@
 package xb.dev.engine.server
 
-data class Caffeine(private val method: String, private val parameters: List<Any>) {
+data class Caffeine(val method: String, val parameters: Map<String, String>) {
 
     companion object {
 
@@ -20,11 +20,11 @@ data class Caffeine(private val method: String, private val parameters: List<Any
                     val parameterName = line[0].trim()
                     val parameterValue = line[1].trim()
 
-                    methodInfo.second[parameterName] to parameterValue
+                    parameterName to parameterValue
                 }
                 .toMap()
 
-            return Caffeine(methodInfo.first, parameters.map { it.value }.toList())
+            return Caffeine(methodInfo.first, parameters)
         }
 
         fun parseMethod(methodInfo: String): Pair<String, Map<String, Int>> {
