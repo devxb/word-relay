@@ -3,12 +3,12 @@ package xb.dev.user.controller
 import org.springframework.stereotype.Component
 import xb.dev.engine.dispatcher.Handleable
 import xb.dev.engine.server.Caffeine
-import xb.dev.user.service.UserJoinService
+import xb.dev.user.service.UserLoginService
 
 @Component
-internal class UserJoinController(private val userJoinService: UserJoinService) : Handleable {
+internal class UserLoginController(private val userLoginService: UserLoginService) : Handleable {
 
-    private val name = "join"
+    private val name = "login"
 
     override fun isHandleable(methodName: String): Boolean = name == methodName
 
@@ -18,6 +18,6 @@ internal class UserJoinController(private val userJoinService: UserJoinService) 
         val password = caffeine.parameters["password"]
             ?: throw IllegalArgumentException("Missing parameter \"password\"")
 
-        return userJoinService.join(name, password).toString()
+        return userLoginService.login(name, password)
     }
 }
