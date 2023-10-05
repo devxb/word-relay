@@ -9,3 +9,4 @@ pluginManagement {
 rootProject.name = 'word-relay'
 
 include 'engine'
+include 'user'
