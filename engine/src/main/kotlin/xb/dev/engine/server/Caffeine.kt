@@ -4,17 +4,19 @@ data class Caffeine(val method: String, val parameters: Map<String, String>) {
 
     companion object {
 
-        private val endOfLine = " *EOL*"
+        private const val END_OF_LINE = " *EOL*"
 
         fun of(message: String): Caffeine {
-            val lines = message.split(endOfLine)
+            val lines = message.split(END_OF_LINE)
 
             val methodInfo = lines.find { it.split(":")[0] == "method" }
                 ?.let { parseMethod(it) } ?: throw IllegalArgumentException(message)
 
             val parameters = lines.asSequence()
-                .filter { it.split(":")[0] != "method"
-                        && it.split(":").size == 2 }
+                .filter {
+                    it.split(":")[0] != "method"
+                            && it.split(":").size == 2
+                }
                 .map {
                     val line = it.split(":")
                     val parameterName = line[0].trim()
@@ -24,10 +26,10 @@ data class Caffeine(val method: String, val parameters: Map<String, String>) {
                 }
                 .toMap()
 
-            return Caffeine(methodInfo.first, parameters)
+            return Caffeine(methodInfo.first.split(":")[1].trim(), parameters)
         }
 
-        fun parseMethod(methodInfo: String): Pair<String, Map<String, Int>> {
+        private fun parseMethod(methodInfo: String): Pair<String, Map<String, Int>> {
             val endOfMethodNameIndex = methodInfo.indexOfFirst { c -> c == '(' }
             val methodName = methodInfo.substring(0, endOfMethodNameIndex)
 

@@ -8,6 +8,19 @@ plugins {
 group = 'xb.dev'
 version = '1.0-SNAPSHOT'
 
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':core')
+    implementation project(':engine')
+    implementation project(':user')
+
+    implementation 'com.h2database:h2'
+    implementation 'org.jetbrains.kotlin:kotlin-reflect'
+}
+
 allprojects {
     apply plugin: 'java-library'
     apply plugin: 'org.jetbrains.kotlin.jvm'

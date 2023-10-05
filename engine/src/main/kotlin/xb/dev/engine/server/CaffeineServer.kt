@@ -1,5 +1,6 @@
 package xb.dev.engine.server
 
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.net.InetSocketAddress
 import java.nio.ByteBuffer
@@ -11,6 +12,8 @@ import java.nio.channels.SocketChannel
 @Service
 class CaffeineServer(private val dispatcher: Dispatchable) {
 
+    private val logger = LoggerFactory.getLogger(this::class.simpleName)
+
     fun start() {
         val selector = Selector.open()
         val channel = ServerSocketChannel.open()
@@ -20,17 +23,20 @@ class CaffeineServer(private val dispatcher: Dispatchable) {
                 this.register(selector, this.validOps(), null)
             }
 
-        while(true) {
-            selector.select()
-            val iter = selector.selectedKeys().iterator()
+        while (true) {
+            try {
+                selector.select()
+                val iter = selector.selectedKeys().iterator()
 
-            while (iter.hasNext()) {
-                val selectedKeys = iter.next()
-                when {
-                    selectedKeys.isAcceptable -> accept(selector, channel)
-                    selectedKeys.isReadable -> read(selectedKeys)
+                while (iter.hasNext()) {
+                    val selectedKeys = iter.next()
+                    when {
+                        selectedKeys.isAcceptable -> accept(selector, channel)
+                        selectedKeys.isReadable -> read(selectedKeys)
+                    }
+                    iter.remove()
                 }
-                iter.remove()
+            } catch (_: Exception) {
             }
         }
     }

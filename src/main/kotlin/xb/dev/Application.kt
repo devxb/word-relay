@@ -2,13 +2,20 @@ package xb.dev
 
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import xb.dev.engine.server.CaffeineServer
 
 @SpringBootApplication
-class Application {
+open class Application {
 
-    fun main(args: Array<String>) {
-        SpringApplication.run(Application::class.java, *args)
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val applicationContext = SpringApplication.run(Application::class.java, *args)
 
+            applicationContext.getBean(CaffeineServer::class.java).run {
+                this.start()
+            }
+        }
     }
 
 }
