@@ -10,3 +10,4 @@ rootProject.name = 'word-relay'
 
 include 'engine'
 include 'user'
+include 'core'
