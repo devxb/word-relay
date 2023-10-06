@@ -5,8 +5,8 @@ import java.io.Serializable
 internal class Room(
     private val id: Long,
     private val ownerId: Long,
-    private val users: MutableSet<Long>,
-    private val messages: MutableList<Message>
+    private val users: MutableSet<Long> = mutableSetOf(),
+    private val messages: MutableList<Message> = mutableListOf()
 ) : Serializable {
 
     init {
