@@ -16,6 +16,6 @@ internal class CreateRoomController(private val createRoomService: CreateRoomSer
         val ownerId = caffeine.parameters["ownerId"]?.toLong()
             ?: throw IllegalArgumentException("Missing parameter \"ownerId\"")
 
-        createRoomService.create(ownerId)
+        return createRoomService.create(ownerId).toString()
     }
 }
