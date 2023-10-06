@@ -13,6 +13,8 @@ internal class Room(
         users.add(ownerId)
     }
 
+    fun join(userId: Long) = users.add(userId)
+
     fun publish(message: Message, roomPublisher: RoomPublisher) {
         validMessageSender(message)
         validNextMessage(message)
