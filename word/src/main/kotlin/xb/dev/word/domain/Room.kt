@@ -3,7 +3,7 @@ package xb.dev.word.domain
 import java.io.Serializable
 
 internal class Room(
-    private val id: Long,
+    val id: Long,
     private val ownerId: Long,
     private val users: MutableSet<Long> = mutableSetOf(),
     private val messages: MutableList<Message> = mutableListOf()
@@ -15,11 +15,10 @@ internal class Room(
 
     fun join(userId: Long) = users.add(userId)
 
-    fun publish(message: Message, roomPublisher: RoomPublisher) {
+    fun validMessage(message: Message) {
         validMessageSender(message)
         validNextMessage(message)
         messages.add(message)
-        roomPublisher.publish(this)
     }
 
     private fun validMessageSender(message: Message) {
