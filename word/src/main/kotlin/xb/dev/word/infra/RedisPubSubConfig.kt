@@ -17,12 +17,12 @@ internal class RedisPubSubConfig {
     fun redisRoomPublisher(): RoomPublisher =
         RoomPublisher { roomId, message -> redisTemplate().convertAndSend(getKey(roomId), message) }
 
-    @Bean(name = ["pubSubRedisTemplate"])
+    @Bean(name = ["redisTemplate", "pubSubRedisTemplate"])
     fun redisTemplate(): RedisTemplate<String, Message> = RedisTemplate<String, Message>().apply {
         this.connectionFactory = redisConnectionFactory()
     }
 
-    @Bean(name = ["pubSubRedisConnectionFactory"])
+    @Bean("pubSubRedisConnectionFactory")
     fun redisConnectionFactory(): RedisConnectionFactory {
         val redisStandaloneConfiguration = RedisStandaloneConfiguration("localhost", 9800)
         return LettuceConnectionFactory(redisStandaloneConfiguration)

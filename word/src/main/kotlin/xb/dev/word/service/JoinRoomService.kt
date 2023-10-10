@@ -1,22 +1,40 @@
 package xb.dev.word.service
 
+import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.data.redis.core.RedisOperations
 import org.springframework.data.redis.core.RedisTemplate
+import org.springframework.data.redis.core.SessionCallback
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import xb.dev.word.domain.Room
 
 @Service
-internal class JoinRoomService(private val redisTemplate: RedisTemplate<String, Room>) {
+internal class JoinRoomService(
+    @Qualifier("persistenceRedisTemplate") private val redisTemplate: RedisTemplate<String, Room>
+) {
 
-    @Transactional(transactionManager = "redisTransactionManager")
-    fun join(roomId: Long, userId: Long): Long {
+    fun join(roomId: Long, userId: Long) {
         val key = getKey(roomId)
-        redisTemplate.watch(key)
         val room = redisTemplate.opsForValue()[key]
-            ?: throw IllegalArgumentException("roomId에 해당하는 방을 찾을 수 없습니다. \"${roomId}\"")
-
+            ?: throw IllegalArgumentException("roomId 에 해당하는 Room을 찾을 수 없습니다. \'${roomId}\"")
         room.join(userId)
-        redisTemplate.opsForValue()[key] = room
-        return roomId
+
+        redisTemplate.kexecute { operation ->
+            operation.watch(key)
+            operation.multi()
+            operation.opsForValue()[key] = room
+            operation.exec()
+        }
     }
+
+}
+
+private inline fun <reified K : Any?, reified V : Any?, reified T> RedisTemplate<K, V>.kexecute(
+    crossinline callback: (RedisOperations<K, V>) -> T?
+): T? {
+
+    return execute(object : SessionCallback<T> {
+        @Suppress("UNCHECKED_CAST")
+        override fun <KK, VV> execute(operations: RedisOperations<KK, VV>) =
+            callback(operations as RedisOperations<K, V>)
+    })
 }

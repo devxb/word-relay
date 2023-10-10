@@ -6,18 +6,17 @@ import org.springframework.data.redis.connection.RedisConnectionFactory
 import org.springframework.data.redis.connection.RedisSentinelConfiguration
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory
 import org.springframework.data.redis.core.RedisTemplate
-import org.springframework.jdbc.datasource.DataSourceTransactionManager
-import org.springframework.transaction.PlatformTransactionManager
 import org.springframework.transaction.annotation.EnableTransactionManagement
 import xb.dev.word.domain.Room
 import xb.dev.word.domain.RoomRepository
 import xb.dev.word.service.getKey
 
+
 @Configuration
 @EnableTransactionManagement
 internal class RedisPersistenceConfig {
 
-    private val sentinels: Set<String> = setOf("localhost:9901, localhost:9902, localhost:9903")
+    private val sentinels: Set<String> = setOf("localhost:26379, localhost:26380, localhost:26381")
 
     @Bean
     internal fun roomRepository(): RoomRepository {
@@ -27,7 +26,8 @@ internal class RedisPersistenceConfig {
                 return room.id
             }
 
-            override fun findRoomById(roomId: Long): Room? = redisTemplate().opsForValue()[getKey(roomId)]
+            override fun findRoomById(roomId: Long): Room? =
+                redisTemplate().opsForValue()[getKey(roomId)]
         }
     }
 
@@ -40,12 +40,7 @@ internal class RedisPersistenceConfig {
 
     @Bean("persistenceRedisConnectionFactory")
     internal fun redisConnectionFactory(): RedisConnectionFactory {
-        val redisSentinelConfiguration = RedisSentinelConfiguration("wordMaster", sentinels)
+        val redisSentinelConfiguration = RedisSentinelConfiguration("redis-master", sentinels)
         return LettuceConnectionFactory(redisSentinelConfiguration)
-    }
-
-    @Bean("redisTransactionManager")
-    internal fun transactionManager(): PlatformTransactionManager {
-        return DataSourceTransactionManager()
     }
 }

@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+  mysql:
+    image: docker.io/mysql:8.0.34
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=0000
+      - MYSQL_DATABASE=word-relay
+    ports:
+      - "3306:3306"
+    volumes:
+      - persistence_data:/mysql
+
+volumes:
+  persistence_data:
+    driver: local
