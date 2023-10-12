@@ -12,19 +12,22 @@ import java.nio.channels.SocketChannel
 @Service
 class CaffeineServer(private val dispatcher: Dispatchable) {
 
-    private val logger = LoggerFactory.getLogger(this::class.simpleName)
+    private val hostName = "localhost"
+    private val port = 8089
+    private val logger = LoggerFactory.getLogger(this::class.qualifiedName)
 
     fun start() {
         val selector = Selector.open()
         val channel = ServerSocketChannel.open()
             .apply {
-                this.socket().bind(InetSocketAddress("localhost", 8089))
+                this.socket().bind(InetSocketAddress(hostName, port))
                 this.configureBlocking(false)
-                this.register(selector, this.validOps(), null)
+                this.register(selector, validOps(), null)
             }
-
+        logger.info("Caffeine Server started on \"${hostName}:${port}\"")
         while (true) {
             try {
+                logger.info("run!")
                 selector.select()
                 val iter = selector.selectedKeys().iterator()
 
@@ -36,8 +39,7 @@ class CaffeineServer(private val dispatcher: Dispatchable) {
                     }
                     iter.remove()
                 }
-            } catch (_: Exception) {
-            }
+            } catch (_: Exception) {}
         }
     }
 
@@ -52,14 +54,19 @@ class CaffeineServer(private val dispatcher: Dispatchable) {
         val buffer = ByteBuffer.allocate(1024)
         client.read(buffer)
         val message = String(buffer.array()).trim { it <= ' ' }
-        if (message == "close") {
+        if (message == "EXIT") {
             client.close()
             return
         }
 
         val caffeine = Caffeine.of(message)
-        println(caffeine)
-        dispatcher.dispatch(caffeine)
+        logger.info("Message input $caffeine")
+        val reply = dispatcher.dispatch(caffeine)
+        logger.info("Message reply $reply")
+        buffer.flip()
+        buffer.put(reply.toByteArray())
+        client.write(buffer)
+        buffer.clear()
     }
 
 }
