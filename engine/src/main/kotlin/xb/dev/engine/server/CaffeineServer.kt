@@ -27,19 +27,23 @@ class CaffeineServer(private val dispatcher: Dispatchable) {
         logger.info("Caffeine Server started on \"${hostName}:${port}\"")
         while (true) {
             try {
-                logger.info("run!")
                 selector.select()
                 val iter = selector.selectedKeys().iterator()
-
                 while (iter.hasNext()) {
                     val selectedKeys = iter.next()
-                    when {
-                        selectedKeys.isAcceptable -> accept(selector, channel)
-                        selectedKeys.isReadable -> read(selectedKeys)
+                    try {
+                        when {
+                            selectedKeys.isAcceptable -> accept(selector, channel)
+                            selectedKeys.isReadable -> read(selectedKeys)
+                        }
+                    } catch (exception: Exception) {
+                        val client = (selectedKeys.channel() as SocketChannel)
+                        client.close()
                     }
                     iter.remove()
                 }
-            } catch (_: Exception) {}
+            } catch (_: Exception) {
+            }
         }
     }
 
@@ -51,9 +55,9 @@ class CaffeineServer(private val dispatcher: Dispatchable) {
 
     private fun read(key: SelectionKey) {
         val client = (key.channel() as SocketChannel)
-        val buffer = ByteBuffer.allocate(1024)
-        client.read(buffer)
-        val message = String(buffer.array()).trim { it <= ' ' }
+        val readBuffer = ByteBuffer.allocate(1024)
+        client.read(readBuffer)
+        val message = String(readBuffer.array()).trim { it <= ' ' }
         if (message == "EXIT") {
             client.close()
             return
@@ -63,10 +67,16 @@ class CaffeineServer(private val dispatcher: Dispatchable) {
         logger.info("Message input $caffeine")
         val reply = dispatcher.dispatch(caffeine)
         logger.info("Message reply $reply")
-        buffer.flip()
-        buffer.put(reply.toByteArray())
-        client.write(buffer)
-        buffer.clear()
+        reply(key, reply)
+    }
+
+    private fun reply(key: SelectionKey, reply: String) {
+        val client = (key.channel() as SocketChannel)
+        val replyBuffer = ByteBuffer.allocate(1024)
+        replyBuffer.put(reply.toByteArray())
+        replyBuffer.flip()
+        client.write(replyBuffer)
+        replyBuffer.clear()
     }
 
 }
