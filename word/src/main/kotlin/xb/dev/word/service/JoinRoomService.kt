@@ -12,7 +12,7 @@ internal class JoinRoomService(
     @Qualifier("persistenceRedisTemplate") private val redisTemplate: RedisTemplate<String, Room>
 ) {
 
-    fun join(roomId: Long, userId: Long) {
+    fun join(roomId: Long, userId: Long): Long {
         val key = getKey(roomId)
         val room = redisTemplate.opsForValue()[key]
             ?: throw IllegalArgumentException("roomId 에 해당하는 Room을 찾을 수 없습니다. \'${roomId}\"")
@@ -24,6 +24,8 @@ internal class JoinRoomService(
             operation.opsForValue()[key] = room
             operation.exec()
         }
+
+        return roomId
     }
 
 }
