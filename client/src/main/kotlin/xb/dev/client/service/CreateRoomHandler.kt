@@ -1,4 +1,4 @@
-package xb.dev.client.controller
+package xb.dev.client.service
 
 import org.springframework.stereotype.Service
 import xb.dev.client.domain.Handler
