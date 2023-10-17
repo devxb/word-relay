@@ -9,6 +9,6 @@ internal class Message(
 ) : Serializable {
 
     companion object {
-        private const val serialVersionUID = 2L;
+        private const val serialVersionUID = 2L
     }
 }
