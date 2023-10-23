@@ -23,6 +23,6 @@ internal class SendMessageController(private val sendMessageService: SendMessage
 
         sendMessageService.send(roomId, senderId, message)
 
-        return "success!"
+        return "0"
     }
 }

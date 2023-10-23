@@ -40,7 +40,7 @@ internal class RedisPersistenceConfig {
 
     @Bean("persistenceRedisConnectionFactory")
     internal fun redisConnectionFactory(): RedisConnectionFactory {
-        val redisSentinelConfiguration = RedisSentinelConfiguration("redis-master", sentinels)
+        val redisSentinelConfiguration = RedisSentinelConfiguration("mymaster", sentinels)
         return LettuceConnectionFactory(redisSentinelConfiguration)
     }
 }

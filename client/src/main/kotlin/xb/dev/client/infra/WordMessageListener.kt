@@ -1,28 +1,24 @@
 package xb.dev.client.infra
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.redis.connection.Message
 import org.springframework.data.redis.connection.MessageListener
 import org.springframework.stereotype.Service
 import xb.dev.client.domain.MessageArrivalEvent
-import java.io.ByteArrayInputStream
-import java.io.ObjectInputStream
 
 @Service
-internal class WordMessageListener(private val eventPublisher: ApplicationEventPublisher) :
-    MessageListener {
+internal class WordMessageListener(
+    private val eventPublisher: ApplicationEventPublisher,
+    private val objectMapper: ObjectMapper
+) : MessageListener {
 
     override fun onMessage(message: Message, pattern: ByteArray?) {
-        val arrivalMessage = fromByteArray(message.body)
+        val arrivalMessage = convertToMessage(message.body)
         eventPublisher.publishEvent(MessageArrivalEvent(arrivalMessage))
     }
 
-    private fun fromByteArray(byteArray: ByteArray): xb.dev.client.domain.Message {
-        val byteArrayInputStream = ByteArrayInputStream(byteArray)
-        val objectInput = ObjectInputStream(byteArrayInputStream)
-        val result = objectInput.readObject() as xb.dev.client.domain.Message
-        objectInput.close()
-        byteArrayInputStream.close()
-        return result
+    private fun convertToMessage(byteArray: ByteArray): xb.dev.client.domain.Message {
+        return objectMapper.readValue(byteArray, xb.dev.client.domain.Message::class.java)
     }
 }

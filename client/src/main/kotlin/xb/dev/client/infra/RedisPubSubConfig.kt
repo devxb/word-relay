@@ -7,6 +7,7 @@ import org.springframework.data.redis.connection.MessageListener
 import org.springframework.data.redis.connection.RedisConnectionFactory
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory
+import org.springframework.data.redis.listener.ChannelTopic
 import org.springframework.data.redis.listener.RedisMessageListenerContainer
 import xb.dev.client.domain.JoinRoomEvent
 
@@ -15,8 +16,9 @@ internal class RedisPubSubConfig(private val wordMessageListener: MessageListene
 
     @EventListener(JoinRoomEvent::class)
     internal fun subscribeRoomByKey(joinRoomEvent: JoinRoomEvent) {
+        println("joinRoomEvent.roomKey ${joinRoomEvent.roomKey}")
         redisMessageListenerContainer().apply {
-            this.addMessageListener(wordMessageListener) { joinRoomEvent.roomKey }
+            this.addMessageListener(wordMessageListener, ChannelTopic(joinRoomEvent.roomKey))
         }
     }
 
