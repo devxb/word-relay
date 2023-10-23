@@ -1,4 +1,4 @@
-rm -rf copy/* && \
+rm -rf ./copy/* && \
 cp server/* ./copy && \
 cp sentinel/* ./copy && \
 redis-server copy/redis_6380.conf && \

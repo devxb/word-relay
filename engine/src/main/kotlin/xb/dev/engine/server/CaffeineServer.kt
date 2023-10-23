@@ -42,7 +42,8 @@ class CaffeineServer(private val dispatcher: Dispatchable) {
                     }
                     iter.remove()
                 }
-            } catch (_: Exception) {
+            } catch (exception: Exception) {
+                exception.printStackTrace()
             }
         }
     }
