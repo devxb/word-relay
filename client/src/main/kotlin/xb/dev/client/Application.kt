@@ -17,10 +17,14 @@ internal class Application {
             val inputer = applicationContext.getBean(Inputable::class.java)
 
             while (true) {
-                val request = inputer.input()
-                val handler = handlers.find { it.isHandleable(request.methodName) }
-                    ?: throw IllegalArgumentException("Cannot find handler named \"${request.methodName}\"")
-                handler.handle(request.parameters)
+                try {
+                    val request = inputer.input()
+                    val handler = handlers.find { it.isHandleable(request.methodName) }
+                        ?: throw IllegalArgumentException("Cannot find handler named \"${request.methodName}\"")
+                    handler.handle(request.parameters)
+                } catch (exception: Exception) {
+                    exception.printStackTrace()
+                }
             }
         }
     }
