@@ -25,6 +25,6 @@ internal class JoinRoomHandler(
 
         val answer=  wordMessenger.send(SupportMessage.JoinRoom(roomId, userId, token))
 
-        eventPublisher.publishEvent(JoinRoomEvent(getKey(answer)))
+        eventPublisher.publishEvent(JoinRoomEvent(getKey(answer.toInt())))
     }
 }

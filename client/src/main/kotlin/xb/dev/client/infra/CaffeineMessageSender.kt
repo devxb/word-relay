@@ -10,7 +10,7 @@ import java.nio.channels.SocketChannel
 @Service
 internal class CaffeineMessageSender : WordMessenger {
 
-    override fun send(message: SupportMessage): Int {
+    override fun send(message: SupportMessage): String {
         val client = SocketChannel.open(
             InetSocketAddress("localhost", 8089)
         )
@@ -28,13 +28,11 @@ internal class CaffeineMessageSender : WordMessenger {
         buffer.clear()
     }
 
-    private fun receiveMessage(client: SocketChannel): Int {
+    private fun receiveMessage(client: SocketChannel): String {
         val buffer = ByteBuffer.allocate(1024)
         client.read(buffer)
         buffer.flip()
-        val message = String(buffer.array()).trim { it <= ' ' }
-        println("received ${message}")
-        return message.toInt()
+        return String(buffer.array()).trim { it <= ' ' }
     }
 
     private fun closeConnect(client: SocketChannel) {
