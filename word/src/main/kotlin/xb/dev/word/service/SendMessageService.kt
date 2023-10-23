@@ -18,6 +18,7 @@ internal class SendMessageService(
             ?: throw IllegalArgumentException("roomId 에 해당하는 Room을 찾을 수 없습니다. \"${roomId}\"")
         val nextMessage = Message(idGenerator.generate(), senderId, message)
         room.validMessage(nextMessage)
+        roomRepository.updateRoom(room)
         roomPublisher.publish(roomId, nextMessage)
     }
 }

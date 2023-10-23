@@ -28,6 +28,10 @@ internal class RedisPersistenceConfig {
 
             override fun findRoomById(roomId: Long): Room? =
                 redisTemplate().opsForValue()[getKey(roomId)]
+
+            override fun updateRoom(room: Room) {
+                redisTemplate().opsForValue()[getKey(room.id)] = room
+            }
         }
     }
 
