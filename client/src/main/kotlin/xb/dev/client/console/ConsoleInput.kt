@@ -6,7 +6,7 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 
 @Service
-internal object ConsoleInputer : Inputable {
+internal object ConsoleInput : Inputable {
 
     private val reader = BufferedReader(InputStreamReader(System.`in`))
 

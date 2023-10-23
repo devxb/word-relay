@@ -1,3 +1,3 @@
 package xb.dev.client.domain
 
-internal data class MessageArrivalEvent(private val message: Message)
+internal data class MessageArrivalEvent(val message: Message)
