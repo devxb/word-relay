@@ -2,7 +2,7 @@ package xb.dev
 
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import xb.dev.engine.server.CaffeineServer
+import xb.dev.server.caffeine.CaffeineServer
 
 @SpringBootApplication
 open class Application {
