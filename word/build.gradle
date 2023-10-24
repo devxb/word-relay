@@ -12,6 +12,7 @@ noArg {
 }
 
 dependencies {
+    implementation project(':dispatch')
     implementation project(':engine')
     implementation project(':core')
     implementation project(':user')

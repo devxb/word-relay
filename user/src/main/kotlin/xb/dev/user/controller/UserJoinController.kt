@@ -1,8 +1,8 @@
 package xb.dev.user.controller
 
 import org.springframework.stereotype.Component
-import xb.dev.engine.dispatcher.Handleable
-import xb.dev.engine.server.Caffeine
+import xb.dev.dispatch.Caffeine
+import xb.dev.dispatch.Handleable
 import xb.dev.user.service.UserJoinService
 
 @Component

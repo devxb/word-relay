@@ -4,9 +4,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.stereotype.Service
-import xb.dev.engine.server.Caffeine
-import xb.dev.engine.server.CaffeineServer
-import xb.dev.engine.server.Dispatchable
+import xb.dev.dispatch.Caffeine
+import xb.dev.dispatch.Dispatchable
 
 @SpringBootApplication
 open class TestServerRunner {

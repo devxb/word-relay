@@ -1,10 +1,9 @@
-package xb.dev.engine.dispatcher
+package xb.dev.dispatch
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import org.springframework.test.context.ContextConfiguration
-import xb.dev.engine.server.Caffeine
 
 @ContextConfiguration(classes = [Dispatcher::class, TestHandler::class])
 internal class DispatcherTest(private val dispatcher: Dispatcher) : DescribeSpec({

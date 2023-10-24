@@ -4,9 +4,9 @@ import jakarta.annotation.PostConstruct
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
-import xb.dev.engine.dispatcher.Handleable
-import xb.dev.engine.dispatcher.Interceptorable
-import xb.dev.engine.server.Caffeine
+import xb.dev.dispatch.Caffeine
+import xb.dev.dispatch.Handleable
+import xb.dev.dispatch.Interceptorable
 import xb.dev.user.service.UserAuthService
 
 @Service
