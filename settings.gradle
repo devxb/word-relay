@@ -8,7 +8,7 @@ pluginManagement {
 
 rootProject.name = 'word-relay'
 
-include 'engine'
+include 'caffeine-server'
 include 'user'
 include 'core'
 include 'word'

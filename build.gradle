@@ -16,7 +16,7 @@ dependencies {
     implementation project(':core')
     implementation project(':user')
     implementation project(':word')
-    implementation project(':engine')
+    implementation project(':caffeine-server')
     implementation project(':dispatch')
 
     implementation 'mysql:mysql-connector-java:8.0.33'

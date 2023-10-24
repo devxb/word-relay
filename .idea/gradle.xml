@@ -8,10 +8,10 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/caffeine-server" />
             <option value="$PROJECT_DIR$/client" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/dispatch" />
-            <option value="$PROJECT_DIR$/engine" />
             <option value="$PROJECT_DIR$/user" />
             <option value="$PROJECT_DIR$/word" />
           </set>
