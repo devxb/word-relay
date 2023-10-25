@@ -3,8 +3,12 @@ package xb.dev.client.infra.netty
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.SimpleChannelInboundHandler
 import xb.dev.client.domain.SupportMessage
+import xb.dev.client.service.Outputable
 
-internal class ClientHandler(private val message: SupportMessage) :
+internal class ClientHandler(
+    private val message: SupportMessage,
+    private val outputable: Outputable
+) :
     SimpleChannelInboundHandler<String>() {
 
     override fun channelActive(ctx: ChannelHandlerContext) {
@@ -12,7 +16,7 @@ internal class ClientHandler(private val message: SupportMessage) :
     }
 
     override fun channelRead0(ctx: ChannelHandlerContext?, msg: String?) {
-        println("receive message : $msg")
+        outputable.output(msg!!)
         ctx!!.close()
     }
 }

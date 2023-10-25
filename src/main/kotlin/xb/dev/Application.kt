@@ -2,7 +2,7 @@ package xb.dev
 
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import xb.dev.server.caffeine.CaffeineServer
+import xb.dev.server.netty.NettyServer
 
 @SpringBootApplication
 open class Application {
@@ -12,7 +12,7 @@ open class Application {
         fun main(args: Array<String>) {
             val applicationContext = SpringApplication.run(Application::class.java, *args)
 
-            applicationContext.getBean(CaffeineServer::class.java).run {
+            applicationContext.getBean(NettyServer::class.java).run {
                 this.start()
             }
         }

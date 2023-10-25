@@ -16,7 +16,6 @@ internal class RedisPubSubConfig(private val wordMessageListener: MessageListene
 
     @EventListener(JoinRoomEvent::class)
     internal fun subscribeRoomByKey(joinRoomEvent: JoinRoomEvent) {
-        println("joinRoomEvent.roomKey ${joinRoomEvent.roomKey}")
         redisMessageListenerContainer().apply {
             this.addMessageListener(wordMessageListener, ChannelTopic(joinRoomEvent.roomKey))
         }

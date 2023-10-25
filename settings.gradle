@@ -9,6 +9,7 @@ pluginManagement {
 rootProject.name = 'word-relay'
 
 include 'caffeine-server'
+include 'netty-server'
 include 'user'
 include 'core'
 include 'word'
