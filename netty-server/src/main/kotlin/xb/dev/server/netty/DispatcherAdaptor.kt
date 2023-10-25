@@ -14,8 +14,13 @@ class DispatcherAdaptor(private val dispatchable: Dispatchable) :
     SimpleChannelInboundHandler<Caffeine>() {
 
     override fun channelRead0(ctx: ChannelHandlerContext?, msg: Caffeine?) {
-        val ans = dispatchable.dispatch(msg!!)
-        val future = ctx!!.writeAndFlush(ans)
-        future.addListener { ChannelFutureListener.CLOSE }
+        try {
+            val ans = dispatchable.dispatch(msg!!)
+            val future = ctx!!.writeAndFlush(ans)
+            future.addListener { ChannelFutureListener.CLOSE }
+        } catch (exception: Exception) {
+            val future = ctx!!.writeAndFlush(exception.message)
+            future.addListener { ChannelFutureListener.CLOSE }
+        }
     }
 }
