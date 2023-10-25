@@ -10,7 +10,8 @@ sealed class SupportMessage private constructor(val methodName: String) {
             return """
                 method: join(name, password) $END_OF_LINE
                 name: $name $END_OF_LINE
-                password: $password $END_OF_LINE
+                password: $password $END_OF_LINE 
+                $END_OF_CONN
             """.trimIndent()
         }
     }
@@ -24,6 +25,7 @@ sealed class SupportMessage private constructor(val methodName: String) {
                 method: login(name, password) $END_OF_LINE
                 name: $name $END_OF_LINE
                 password: $password $END_OF_LINE
+                $END_OF_CONN
             """.trimIndent()
         }
     }
@@ -37,6 +39,7 @@ sealed class SupportMessage private constructor(val methodName: String) {
                 method: createRoom(ownerId) $END_OF_LINE
                 ownerId: $ownerId $END_OF_LINE
                 token: $token $END_OF_LINE
+                $END_OF_CONN
             """.trimIndent()
         }
     }
@@ -52,6 +55,7 @@ sealed class SupportMessage private constructor(val methodName: String) {
                 roomId: $roomId $END_OF_LINE
                 userId: $userId $END_OF_LINE
                 token: $token $END_OF_LINE
+                $END_OF_CONN
             """.trimIndent()
         }
     }
@@ -69,6 +73,7 @@ sealed class SupportMessage private constructor(val methodName: String) {
                 senderId: $senderId $END_OF_LINE
                 message: $message $END_OF_LINE
                 token: $token $END_OF_LINE
+                $END_OF_CONN
             """.trimIndent()
         }
     }
@@ -77,5 +82,6 @@ sealed class SupportMessage private constructor(val methodName: String) {
 
     private companion object {
         private const val END_OF_LINE = "*EOL*"
+        private const val END_OF_CONN = "*EOC*"
     }
 }

@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'io.netty:netty-all:4.1.100.Final'
 
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.3'
     implementation 'com.fasterxml.jackson.module:jackson-module-parameter-names:2.15.3'
