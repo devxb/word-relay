@@ -3,7 +3,7 @@ package xb.dev.client.infra.netty
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.SimpleChannelInboundHandler
 import xb.dev.client.domain.SupportMessage
-import xb.dev.client.service.Outputable
+import xb.dev.client.domain.Outputable
 
 internal class ClientHandler(
     private val message: SupportMessage,

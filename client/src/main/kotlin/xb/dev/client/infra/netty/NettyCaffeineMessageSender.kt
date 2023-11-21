@@ -10,7 +10,7 @@ import io.netty.handler.codec.string.StringDecoder
 import org.springframework.stereotype.Service
 import xb.dev.client.domain.SupportMessage
 import xb.dev.client.domain.WordMessenger
-import xb.dev.client.service.Outputable
+import xb.dev.client.domain.Outputable
 
 @Service
 internal class NettyCaffeineMessageSender(

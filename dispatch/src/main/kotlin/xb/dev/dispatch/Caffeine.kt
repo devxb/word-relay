@@ -40,7 +40,7 @@ data class Caffeine(
         }
 
         private fun isSetupRequest(lines: List<String>): Boolean {
-            return !lines.find { it == ProtocolRule.SETUP.value }.isNullOrBlank()
+            return !lines.find { it.trim() == ProtocolRule.SETUP.value }.isNullOrBlank()
         }
 
         private fun validProtocol(lines: List<String>) {

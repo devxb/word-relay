@@ -3,6 +3,7 @@ package xb.dev.client.service
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
 import xb.dev.client.domain.MessageArrivalEvent
+import xb.dev.client.domain.Outputable
 
 @Service
 internal class MessageArrivalService(private val outputer: Outputable) {

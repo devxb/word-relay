@@ -6,7 +6,7 @@ sealed class SupportMessage private constructor(val methodName: String) {
 
     internal class Join(
         private val name: String,
-        private val password: String
+        private val password: String,
     ) : SupportMessage("join") {
         override fun toMessage(): String {
             return """
@@ -21,7 +21,7 @@ sealed class SupportMessage private constructor(val methodName: String) {
 
     internal class Login(
         private val name: String,
-        private val password: String
+        private val password: String,
     ) : SupportMessage("login") {
         override fun toMessage(): String {
             return """
@@ -36,7 +36,7 @@ sealed class SupportMessage private constructor(val methodName: String) {
 
     internal class CreateRoom(
         private val ownerId: Int,
-        private val token: String
+        private val token: String,
     ) : SupportMessage("createRoom") {
         override fun toMessage(): String {
             return """
@@ -52,7 +52,7 @@ sealed class SupportMessage private constructor(val methodName: String) {
     internal class JoinRoom(
         private val roomId: Int,
         private val userId: Int,
-        private val token: String
+        private val token: String,
     ) : SupportMessage("joinRoom") {
         override fun toMessage(): String {
             return """
@@ -70,7 +70,7 @@ sealed class SupportMessage private constructor(val methodName: String) {
         private val roomId: Int,
         private val senderId: Int,
         private val message: String,
-        private val token: String
+        private val token: String,
     ) : SupportMessage("sendMessage") {
         override fun toMessage(): String {
             return """
@@ -82,6 +82,15 @@ sealed class SupportMessage private constructor(val methodName: String) {
                 token: $token ${ProtocolRule.END_OF_LINE.value}
                 ${ProtocolRule.END_OF_CONN.value}
             """.trimIndent()
+        }
+    }
+
+    internal class Setup : SupportMessage("setUp") {
+        override fun toMessage(): String {
+            return """
+                    ${ProtocolRule.SETUP.value} ${ProtocolRule.END_OF_LINE.value}
+                    ${ProtocolRule.END_OF_CONN.value}
+                """.trimIndent()
         }
     }
 

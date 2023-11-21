@@ -16,6 +16,7 @@ internal class JoinUserHandler(private val wordMessenger: WordMessenger) : Handl
         val password = arg["password"]
             ?: throw IllegalArgumentException("Missing parameter \"password\"")
 
+        wordMessenger.send(SupportMessage.Setup())
         wordMessenger.send(SupportMessage.Join(name, password))
     }
 }

@@ -23,6 +23,7 @@ internal class JoinRoomHandler(
             ?: throw IllegalArgumentException("Missing parameter \"userId\"")
         val token = arg["token"] ?: throw IllegalArgumentException("Missing parameter \"token\"")
 
+        wordMessenger.send(SupportMessage.Setup())
         wordMessenger.send(SupportMessage.JoinRoom(roomId, userId, token))
 
         eventPublisher.publishEvent(JoinRoomEvent(getKey(roomId)))

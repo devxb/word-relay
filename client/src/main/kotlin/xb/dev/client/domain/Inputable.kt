@@ -1,4 +1,4 @@
-package xb.dev.client.service
+package xb.dev.client.domain
 
 internal fun interface Inputable {
 

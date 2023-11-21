@@ -19,6 +19,7 @@ internal class SendMessageHandler(private val wordMessenger: WordMessenger) : Ha
             ?: throw IllegalArgumentException("Missing parameter \"message\"")
         val token = arg["token"] ?: throw IllegalArgumentException("Missing parameter \"token\"")
 
+        wordMessenger.send(SupportMessage.Setup())
         wordMessenger.send(SupportMessage.SendMessage(roomId, userId, message, token))
     }
 }

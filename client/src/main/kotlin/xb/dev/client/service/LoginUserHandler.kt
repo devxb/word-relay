@@ -16,6 +16,7 @@ internal class LoginUserHandler(private val wordMessenger: WordMessenger) : Hand
         val password = arg["password"]
             ?: throw IllegalArgumentException("Missing parameter \"password\"")
 
+        wordMessenger.send(SupportMessage.Setup())
         wordMessenger.send(SupportMessage.Login(name, password))
     }
 }

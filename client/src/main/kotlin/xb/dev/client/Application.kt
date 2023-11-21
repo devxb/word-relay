@@ -3,7 +3,7 @@ package xb.dev.client
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import xb.dev.client.domain.Handler
-import xb.dev.client.service.Inputable
+import xb.dev.client.domain.Inputable
 
 @SpringBootApplication
 internal class Application {

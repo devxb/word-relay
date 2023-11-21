@@ -1,7 +1,7 @@
 package xb.dev.client.console
 
 import org.springframework.stereotype.Service
-import xb.dev.client.service.Inputable
+import xb.dev.client.domain.Inputable
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
