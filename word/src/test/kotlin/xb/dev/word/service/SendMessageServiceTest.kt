@@ -25,6 +25,7 @@ internal class SendMessageServiceTest(
         every { roomPublisher.publish(any(), any()) } returns Unit
         every { roomRepository.findRoomById(any()) } returns null
         every { roomRepository.findRoomById(roomId) } returns room
+        every { roomRepository.updateRoom(any()) } returns Unit
     }
 
     describe("send 메소드는") {

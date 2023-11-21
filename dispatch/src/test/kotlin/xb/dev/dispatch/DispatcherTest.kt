@@ -32,7 +32,7 @@ internal class DispatcherTest(private val dispatcher: Dispatcher) : DescribeSpec
 
 }) {
     companion object {
-        private val handleableCaffeine = Caffeine("test", mapOf("p1" to "p2"))
-        private val notHandleableCaffeine = Caffeine("cannot handle", mapOf("p1" to "p2"))
+        private val handleableCaffeine = Caffeine("test", mapOf("p1" to "p2"), false)
+        private val notHandleableCaffeine = Caffeine("cannot handle", mapOf("p1" to "p2"), false)
     }
 }

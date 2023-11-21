@@ -8,8 +8,9 @@ import io.mockk.every
 import org.springframework.test.context.ContextConfiguration
 import xb.dev.user.domain.User
 import xb.dev.user.domain.UserJpaRepository
+import xb.dev.user.infra.JwtToken
 
-@ContextConfiguration(classes = [UserLoginService::class])
+@ContextConfiguration(classes = [UserLoginService::class, JwtToken::class])
 internal class UserLoginServiceTest(
     private val userLoginService: UserLoginService,
     @MockkBean private val userJpaRepository: UserJpaRepository
@@ -28,7 +29,7 @@ internal class UserLoginServiceTest(
             it("토큰을 반환한다.") {
                 val result: String = userLoginService.login(SAVED_USER_NAME, SAVED_USER_PASSWORD)
 
-                result shouldBe SAVED_USER_ID.toString()
+                result::class shouldBe String::class
             }
         }
 

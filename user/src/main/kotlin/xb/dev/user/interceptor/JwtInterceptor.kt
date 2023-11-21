@@ -12,7 +12,7 @@ import xb.dev.user.service.UserAuthService
 @Service
 internal class JwtInterceptor(
     private val userAuthService: UserAuthService,
-    @Value("\${jwt.interceptor.path}") private val paths: List<String>
+    @Value("\${jwt.interceptor.path:joinRoom,createRoom,sendMessage}") private val paths: List<String>,
 ) : Interceptorable() {
 
     private val logger = LoggerFactory.getLogger(this::class.simpleName)
