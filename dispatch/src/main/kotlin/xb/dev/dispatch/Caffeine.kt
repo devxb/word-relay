@@ -1,15 +1,25 @@
 package xb.dev.dispatch
 
-data class Caffeine(val method: String, val parameters: Map<String, String>) {
+import xb.dev.core.proto.ProtocolRule
+
+data class Caffeine(
+    val method: String,
+    val parameters: Map<String, String>,
+    val isSetupRequest: Boolean,
+) {
 
     companion object {
 
-        private const val END_OF_LINE = " *EOL*"
-
         fun of(message: String): Caffeine {
-            val lines = message.split(END_OF_LINE)
+            val lines = message.split(ProtocolRule.END_OF_LINE.value)
 
-            val methodInfo = lines.find { it.split(":")[0] == "method" }
+            if (isSetupRequest(lines)) {
+                return Caffeine("", mapOf(), true)
+            }
+
+            validProtocol(lines)
+
+            val methodInfo = lines.find { it.split(":")[0].trim() == "method" }
                 ?.let { parseMethod(it) } ?: throw IllegalArgumentException(message)
 
             val parameters = lines.asSequence()
@@ -26,7 +36,17 @@ data class Caffeine(val method: String, val parameters: Map<String, String>) {
                 }
                 .toMap()
 
-            return Caffeine(methodInfo.first.split(":")[1].trim(), parameters)
+            return Caffeine(methodInfo.first.split(":")[1].trim(), parameters, false)
+        }
+
+        private fun isSetupRequest(lines: List<String>): Boolean {
+            return !lines.find { it == ProtocolRule.SETUP.value }.isNullOrBlank()
+        }
+
+        private fun validProtocol(lines: List<String>) {
+            requireNotNull(lines.find { it.trim() == ProtocolRule.REQUEST.value }) {
+                "올바르지 않은 프로토콜 포맷"
+            }
         }
 
         private fun parseMethod(methodInfo: String): Pair<String, Map<String, Int>> {

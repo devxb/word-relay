@@ -10,6 +10,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel
 import io.netty.handler.codec.DelimiterBasedFrameDecoder
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import xb.dev.core.proto.ProtocolRule
 import java.nio.charset.Charset
 
 @Service
@@ -32,7 +33,10 @@ class NettyServer(private val dispatcherAdaptor: DispatcherAdaptor) {
                                     Int.MAX_VALUE,
                                     true,
                                     true,
-                                    Unpooled.copiedBuffer(END_OF_CONN, Charset.forName("UTF-8"))
+                                    Unpooled.copiedBuffer(
+                                        ProtocolRule.END_OF_CONN.value,
+                                        Charset.forName("UTF-8")
+                                    )
                                 )
                             )
                             .addLast(CaffeineDecoder())
@@ -45,6 +49,8 @@ class NettyServer(private val dispatcherAdaptor: DispatcherAdaptor) {
             val channelFuture = serverBootStrap.bind(HOST_NAME, PORT).sync()
             logger.info("Netty server on $HOST_NAME:$PORT")
             channelFuture.channel().closeFuture().sync()
+        } catch (exception: Exception) {
+            exception.printStackTrace()
         } finally {
             parentGroup.shutdownGracefully()
             childGroup.shutdownGracefully()
@@ -52,7 +58,6 @@ class NettyServer(private val dispatcherAdaptor: DispatcherAdaptor) {
     }
 
     companion object {
-        private const val END_OF_CONN = "*EOC*"
         private const val HOST_NAME = "localhost"
         private const val PORT = 8089
     }

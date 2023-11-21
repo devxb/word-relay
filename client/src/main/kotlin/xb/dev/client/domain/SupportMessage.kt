@@ -1,5 +1,7 @@
 package xb.dev.client.domain
 
+import xb.dev.core.proto.ProtocolRule
+
 sealed class SupportMessage private constructor(val methodName: String) {
 
     internal class Join(
@@ -8,10 +10,11 @@ sealed class SupportMessage private constructor(val methodName: String) {
     ) : SupportMessage("join") {
         override fun toMessage(): String {
             return """
-                method: join(name, password) $END_OF_LINE
-                name: $name $END_OF_LINE
-                password: $password $END_OF_LINE 
-                $END_OF_CONN
+                ${ProtocolRule.REQUEST.value} ${ProtocolRule.END_OF_LINE.value}
+                method: join(name, password) ${ProtocolRule.END_OF_LINE.value}
+                name: $name ${ProtocolRule.END_OF_LINE.value}
+                password: $password ${ProtocolRule.END_OF_LINE.value} 
+                ${ProtocolRule.END_OF_CONN.value}
             """.trimIndent()
         }
     }
@@ -22,10 +25,11 @@ sealed class SupportMessage private constructor(val methodName: String) {
     ) : SupportMessage("login") {
         override fun toMessage(): String {
             return """
-                method: login(name, password) $END_OF_LINE
-                name: $name $END_OF_LINE
-                password: $password $END_OF_LINE
-                $END_OF_CONN
+                ${ProtocolRule.REQUEST.value} ${ProtocolRule.END_OF_LINE.value}
+                method: login(name, password) ${ProtocolRule.END_OF_LINE.value}
+                name: $name ${ProtocolRule.END_OF_LINE.value}
+                password: $password ${ProtocolRule.END_OF_LINE.value}
+                ${ProtocolRule.END_OF_CONN.value}
             """.trimIndent()
         }
     }
@@ -36,10 +40,11 @@ sealed class SupportMessage private constructor(val methodName: String) {
     ) : SupportMessage("createRoom") {
         override fun toMessage(): String {
             return """
-                method: createRoom(ownerId) $END_OF_LINE
-                ownerId: $ownerId $END_OF_LINE
-                token: $token $END_OF_LINE
-                $END_OF_CONN
+                ${ProtocolRule.REQUEST.value} ${ProtocolRule.END_OF_LINE.value}
+                method: createRoom(ownerId) ${ProtocolRule.END_OF_LINE.value}
+                ownerId: $ownerId ${ProtocolRule.END_OF_LINE.value}
+                token: $token ${ProtocolRule.END_OF_LINE.value}
+                ${ProtocolRule.END_OF_CONN.value}
             """.trimIndent()
         }
     }
@@ -51,11 +56,12 @@ sealed class SupportMessage private constructor(val methodName: String) {
     ) : SupportMessage("joinRoom") {
         override fun toMessage(): String {
             return """
-                method: joinRoom(roomId, userId) $END_OF_LINE
-                roomId: $roomId $END_OF_LINE
-                userId: $userId $END_OF_LINE
-                token: $token $END_OF_LINE
-                $END_OF_CONN
+                ${ProtocolRule.REQUEST.value} ${ProtocolRule.END_OF_LINE.value}
+                method: joinRoom(roomId, userId) ${ProtocolRule.END_OF_LINE.value}
+                roomId: $roomId ${ProtocolRule.END_OF_LINE.value}
+                userId: $userId ${ProtocolRule.END_OF_LINE.value}
+                token: $token ${ProtocolRule.END_OF_LINE.value}
+                ${ProtocolRule.END_OF_CONN.value}
             """.trimIndent()
         }
     }
@@ -68,20 +74,17 @@ sealed class SupportMessage private constructor(val methodName: String) {
     ) : SupportMessage("sendMessage") {
         override fun toMessage(): String {
             return """
-                method: sendMessage(roomId, senderId, message) *EOL*
-                roomId: $roomId $END_OF_LINE
-                senderId: $senderId $END_OF_LINE
-                message: $message $END_OF_LINE
-                token: $token $END_OF_LINE
-                $END_OF_CONN
+                ${ProtocolRule.REQUEST.value} ${ProtocolRule.END_OF_LINE.value}
+                method: sendMessage(roomId, senderId, message) ${ProtocolRule.END_OF_LINE.value}
+                roomId: $roomId ${ProtocolRule.END_OF_LINE.value}
+                senderId: $senderId ${ProtocolRule.END_OF_LINE.value}
+                message: $message ${ProtocolRule.END_OF_LINE.value}
+                token: $token ${ProtocolRule.END_OF_LINE.value}
+                ${ProtocolRule.END_OF_CONN.value}
             """.trimIndent()
         }
     }
 
     abstract fun toMessage(): String
 
-    private companion object {
-        private const val END_OF_LINE = "*EOL*"
-        private const val END_OF_CONN = "*EOC*"
-    }
 }

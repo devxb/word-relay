@@ -15,29 +15,32 @@ import xb.dev.client.service.Outputable
 @Service
 internal class NettyCaffeineMessageSender(
     private val requestCaffeineEncoder: RequestCaffeineEncoder,
-    private val outputable: Outputable
-) :
-    WordMessenger {
+    private val outputable: Outputable,
+) : WordMessenger {
 
     private val workerGroup = NioEventLoopGroup()
 
     override fun send(message: SupportMessage): String {
-        val bootstrap = Bootstrap()
-            .apply {
-                this.group(workerGroup)
-                this.channel(NioSocketChannel::class.java)
-                this.option(ChannelOption.SO_KEEPALIVE, true)
-                this.handler(object : ChannelInitializer<SocketChannel>() {
-                    override fun initChannel(ch: SocketChannel) {
-                        ch.pipeline()
-                            .addLast(requestCaffeineEncoder)
-                            .addLast(StringDecoder())
-                            .addLast(ClientHandler(message, outputable))
-                    }
-                })
-            }
-        val channelFuture = bootstrap.connect(HOST, PORT).sync()
-        channelFuture.channel().closeFuture().sync()
+        try {
+            val bootstrap = Bootstrap()
+                .apply {
+                    this.group(workerGroup)
+                    this.channel(NioSocketChannel::class.java)
+                    this.option(ChannelOption.SO_KEEPALIVE, true)
+                    this.handler(object : ChannelInitializer<SocketChannel>() {
+                        override fun initChannel(ch: SocketChannel) {
+                            ch.pipeline()
+                                .addLast(requestCaffeineEncoder)
+                                .addLast(StringDecoder())
+                                .addLast(ClientHandler(message, outputable))
+                        }
+                    })
+                }
+            val channelFuture = bootstrap.connect(HOST, PORT).sync()
+            channelFuture.channel().closeFuture().sync()
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        }
         return ""
     }
 

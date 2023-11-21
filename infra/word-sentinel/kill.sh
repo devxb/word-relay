@@ -1,4 +1,4 @@
-ps -ef | \
-grep redis | \
-awk '{print $2}' | \
-xargs kill
+sudo ps -ef | \
+sudo grep redis | \
+sudo awk '{print $2}' | \
+sudo xargs kill
